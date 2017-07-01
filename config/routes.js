@@ -47,5 +47,6 @@ module.exports.routes = {
   ***************************************************************************/
   //Authorization Routes
   'post /register': 'UsersController.register',
+  'post /login': 'UsersController.login'
 
 };
