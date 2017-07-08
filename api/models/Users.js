@@ -53,15 +53,67 @@ module.exports = {
         defaultsTo: {}
       },
 
-      toJSON: function(){
-        var obj = this.toObject();
-        delete obj.password;
-        delete obj.socialProfiles;
-        return obj;
+      first_name: {
+          type: 'string'
+      },
+
+      last_name: {
+          type: 'string'
+      },
+
+      location: {
+          type: 'string'
+      },
+
+      date_registered: {
+          type: 'date'
+      },
+
+      date_verified: {
+          type : 'date'
+      },
+
+      comparePassword: function(password) {
+          return bcrypt.compareSync(password, this.password);
+      },
+
+      toJSON: function() {
+
+          var obj = this.toObject();
+          delete obj.password;
+
+          return obj;
       }
   },
 
-  beforeUpdate: function(values, next){
+  beforeCreate: function(user, next) {
+      if (user.hasOwnProperty('password')) {
+          user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(10));
+          next(false, user);
+
+      } else {
+          next(null, user);
+      }
+  },
+
+
+  beforeUpdate: function(user, next) {
+      if (user.hasOwnProperty('password')) {
+          user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(10));
+          next(false, user);
+      } else {
+          next(null, user);
+      }
+  },
+
+  authenticate: function (username, password) {
+      return API.Model(Users).findOne({username: username}).then(function(user){
+          return (user && user.date_verified && user.comparePassword(password))? user : null;
+      });
+  }
+
+  //to be used with CipherService, passport
+  /*beforeUpdate: function(values, next){
     CipherService.hashPassword(values);
     next();
   },
@@ -69,6 +121,6 @@ module.exports = {
   beforeCreate: function(values, next){
     CipherService.hashPassword(values);
     next();
-  }
+  }*/
 };
 
