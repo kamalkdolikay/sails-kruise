@@ -8,12 +8,12 @@ module.exports.security = {
     },
     admin: {
         email: {
-            address: 'gurjeets@smartdatainc.net',
-            password: 'gurjeets'
+            address: 'kamal.llymach@gmail.com',
+            password: 'kamalkd123'
         },
 
     },
     server: {
-        url: 'https://efarmapi.herokuapp.com'
+        url: 'http://localhost:1337'
     }
 };
