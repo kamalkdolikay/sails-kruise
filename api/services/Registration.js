@@ -43,7 +43,7 @@ var emailGeneratedCode = function (options) {
 
     return {
         url: url
-    }
+    };
 };
 
 module.exports = {
@@ -92,6 +92,7 @@ module.exports = {
     currentUser: function(data,context){
       return context.identity;
     },
+
     registerUser: function (data, context) {
         var date = new Date();
         return API.Model(Users).create({

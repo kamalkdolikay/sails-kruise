@@ -6,8 +6,7 @@
 module.exports = function (data, code, message, root) {
   var response = _.assign({
     code: code || 'E_UNAUTHORIZED',
-    message: message || 'Missing or invalid authentication token',
-    data: data || {}
+    message: message || 'Unauthorized Access'
   }, root);
 
   this.req._sails.log.silly('Sent (401 UNAUTHORIZED)\n', response);

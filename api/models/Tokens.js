@@ -61,7 +61,7 @@ module.exports = {
             var hiddenProperties = ['id','access_token','refresh_token','code','user_id','client_id'],
                 obj = this.toObject();
 
-            obj.expires_in = this.expires_in();
+            obj.expires_in = this.calc_expires_in();
 
             hiddenProperties.forEach(function(property){
                 delete obj[property];
@@ -98,7 +98,7 @@ module.exports = {
             // Handle expired token
             if (token.expiration_date && new Date() > token.expiration_date) {
                 return $Tokens.destroy({access_token: token}).then(function () {
-                    return null
+                    return null;
                 });
             }
 
