@@ -48,48 +48,7 @@ var emailGeneratedCode = function (options) {
 };
 
 module.exports = {
-    register: function(data){
-        console.log("data", data);
-        data.password = bcrypt.hashSync(data.password, bcrypt.genSaltSync(10));
-        return API.Model(Users).create(data).then(function(user){
-            return {
-                message: "success"
-            };
-        });
-    },
-
-    login: function(data){
-        console.log("data",data);
-        let username = data.username;
-        return API.Model(Users).findOne({username:username}).then(function(user){
-            console.log("user",user);
-            if( user === undefined ){
-                return {
-                    success: false,
-                    error: {
-                        code: 404,
-                        message: "user not found"
-                    }
-                };
-            }
-
-            if( !bcrypt.compareSync(data.password, user.password) ){
-                return {
-                    success: false,
-                    error: {
-                        code: 404,
-                        message: "incorrect password"
-                    }
-                };
-            } else {
-                return Tokens.generateToken({
-                        user_id: user.id,
-                        client_id: Tokens.generateTokenString()
-                    });
-            }
-        });
-    },
-
+    
     currentUser: function(data,context){
       return context.identity;
     },
@@ -166,7 +125,6 @@ module.exports = {
         });
     },
 
-
     verifyClient: function (data, context) {
         return Tokens.authenticate({
             type: 'verification',
@@ -193,43 +151,42 @@ module.exports = {
     },
 
     signinUser: function(data, context) {
-         return Users.findOne({username: data.username}).then(function (user){
-             if( user === undefined ){
-                 return {
-                     success: false,
-                     error: {
-                         code: 404,
-                         message: "wrong username",
-                         key: "WRONG_USERNAME"
-                     }
-                 }
-             }
+        var query = { username: data.username }
+        return Users.findOne(query).then(function (user){
+            if( user === undefined ){
+                return {
+                    success: false,
+                    error: {
+                        code: 404,
+                        message: "user not found",
+                        key: "WRONG_USERNAME"
+                    }
+                }
+            }
 
-             if( !bcrypt.compareSync(data.password, user.password)){
-                 return {
-                     success: false,
-                     error: {
-                         code: 404,
-                         message: "wrong password",
-                         key: "WRONG_PASSWORD"
-                     }
-                 }
-             } else {
-                return Tokens.generateToken({
-                    client_id: data.client_id,
-                    user_id: user.id
-                }).then(function (token){
+            if( !bcrypt.compareSync(data.password, user.password) ){
+                return {
+                    success: false,
+                    error: {
+                        code: 404,
+                        message: "incorrect password",
+                        key: "WRONG_PASSWORD"
+                    }
+                }
+            } else {
+                var params = { client_id: data.client_id, user_id: user.id }
+                return Tokens.generateToken(params).then(function (token){
                     user.access_token = token.access_token;
                     user.refresh_token = token.refresh_token;
 
                     return {
                         success: true,
                         code: 200,
-                        message: "Logged in successfully",
+                        message: "Logged in Successfully",
                         data: user
                     }
                 })
             }
-         })
+        })
     }
 }
