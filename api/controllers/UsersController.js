@@ -20,7 +20,11 @@ module.exports = {
     },
 
     login: function(req, res){
-        API(Registeration.login, req, res);
+        API(Registration.login, req, res);
+    },
+
+    signin: function(req, res){
+        API(Registration.signinUser, req, res);
     }
 };
 

@@ -1,9 +1,10 @@
-var Promise = require('bluebird'),
-    promisify = Promise.promisify,
-    mailer = require('nodemailer'),
-    smtpTransport = require('nodemailer-smtp-transport'),
+var Promise         = require('bluebird'),
+    promisify       = Promise.promisify,
+    mailer          = require('nodemailer'),
+    smtpTransport   = require('nodemailer-smtp-transport'),
     emailGeneratedCode,
-    transporter;
+    transporter,
+    bcrypt          = require('bcrypt-nodejs');
 
 
 transporter = mailer.createTransport(smtpTransport({
@@ -189,5 +190,46 @@ module.exports = {
                 email: info.identity.email
             };
         });
+    },
+
+    signinUser: function(data, context) {
+         return Users.findOne({username: data.username}).then(function (user){
+             if( user === undefined ){
+                 return {
+                     success: false,
+                     error: {
+                         code: 404,
+                         message: "wrong username",
+                         key: "WRONG_USERNAME"
+                     }
+                 }
+             }
+
+             if( !bcrypt.compareSync(data.password, user.password)){
+                 return {
+                     success: false,
+                     error: {
+                         code: 404,
+                         message: "wrong password",
+                         key: "WRONG_PASSWORD"
+                     }
+                 }
+             } else {
+                return Tokens.generateToken({
+                    client_id: data.client_id,
+                    user_id: user.id
+                }).then(function (token){
+                    user.access_token = token.access_token;
+                    user.refresh_token = token.refresh_token;
+
+                    return {
+                        success: true,
+                        code: 200,
+                        message: "Logged in successfully",
+                        data: user
+                    }
+                })
+            }
+         })
     }
 }
