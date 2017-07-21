@@ -35,7 +35,8 @@ module.exports.policies = {
   UsersController: {
     '*' : 'OAuthValidateAccessToken',
     'register' : true,
-    'verify/:email' : true
+    'verify/:email' : true,
+    'signin': true
   },
   ClientsController: {
       '*' : 'OAuthValidateAccessToken',
