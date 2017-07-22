@@ -46,6 +46,11 @@ module.exports = {
         defaultsTo: ''
       },
 
+      fullname: {
+        type: 'string',
+        defaultsTo: ''
+      },
+
       image: {
         type: 'string',
         defaultsTo: '',
