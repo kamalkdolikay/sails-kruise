@@ -17,6 +17,9 @@ module.exports = {
 
     signin: function(req, res){
         API(UsersService.signinUser, req, res);
+    },
+
+    signup: function(req, res){
+        API(UsersService.signupUser, req, res);
     }
 };
-

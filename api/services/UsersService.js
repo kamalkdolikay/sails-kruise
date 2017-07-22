@@ -42,13 +42,22 @@ var emailGeneratedCode = function (options) {
         console.log("Email Response:", info);
     });
 
-    return {
-        url: url
-    };
+    return { success: true };
+};
+
+var saveUser = function(data){
+    data.fullName = data.firstName + ' ' + data.lastName;
+    data.status = "active";
+
+    delete data.client_id;
+
+    return API.Model(Users).create(data).then(function(user){
+        return user;
+    });
 };
 
 module.exports = {
-    
+
     currentUser: function(data,context){
       return context.identity;
     },
@@ -99,7 +108,7 @@ module.exports = {
             return {
                 verified: true,
                 email: info.identity.email
-            }
+            };
         });
     },
 
@@ -151,7 +160,7 @@ module.exports = {
     },
 
     signinUser: function(data, context) {
-        var query = { username: data.username }
+        var query = { username: data.username };
         return Users.findOne(query).then(function (user){
             if( user === undefined ){
                 return {
@@ -161,7 +170,7 @@ module.exports = {
                         message: "user not found",
                         key: "WRONG_USERNAME"
                     }
-                }
+                };
             }
 
             if( !bcrypt.compareSync(data.password, user.password) ){
@@ -172,7 +181,7 @@ module.exports = {
                         message: "incorrect password",
                         key: "WRONG_PASSWORD"
                     }
-                }
+                };
             } else {
                 var params = { client_id: data.client_id, user_id: user.id }
                 return Tokens.generateToken(params).then(function (token){
@@ -184,9 +193,39 @@ module.exports = {
                         code: 200,
                         message: "Logged in Successfully",
                         data: user
-                    }
-                })
+                    };
+                });
             }
-        })
+        });
+    },
+
+    signupUser: function(data, context, req, res){
+        var date = new Date();
+        data.date_registered = date;
+        data.date_verified = date;
+
+        return Users.findOne({username:data.username}).then(function(user){
+            if( user !== undefined ){
+                return {
+                    success: false,
+                    error: {
+                        code: 301,
+                        message: "User Already Exists",
+                        key: "USER_EXISTS"
+                    }
+                };
+            } else {
+                saveUser(data).then(function(response){
+                    var code = Math.floor(100000001 + Math.random() * 900000001);
+                    emailGeneratedCode({
+                        id: response.id,
+                        type: "Email",
+                        verifyURL: sails.config.security.server.url + "/user/verification" + code,
+                        email: data.email
+                    });
+                    return res.jsonx({success: true, code:200, message: "SUCCESSFULLY_REGISTERED", data: response});
+                });
+            }
+        });
     }
-}
+};
