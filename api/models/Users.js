@@ -42,6 +42,11 @@ module.exports = {
         defaultsTo: ''
       },
 
+      fullName: {
+        type: 'string',
+        defaultsTo: ''
+      },
+
       image: {
         type: 'string',
         defaultsTo: '',
@@ -51,14 +56,6 @@ module.exports = {
       socialProfiles: {
         type: 'object',
         defaultsTo: {}
-      },
-
-      first_name: {
-          type: 'string'
-      },
-
-      last_name: {
-          type: 'string'
       },
 
       location: {
