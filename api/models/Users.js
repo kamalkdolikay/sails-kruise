@@ -83,8 +83,11 @@ module.exports = {
 
       image: {
         type: 'string',
-        defaultsTo: '',
-        url: true
+        defaultsTo: ''
+      },
+
+      location: {
+          type: 'string'
       },
 
       date_registered: {
