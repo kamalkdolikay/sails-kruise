@@ -46,10 +46,8 @@ var emailGeneratedCode = function (options) {
 };
 
 var saveUser = function(data){
-    data.fullName = data.firstName + ' ' + data.lastName;
+    data.fullname = data.firstname + ' ' + data.lastname;
     data.status = "active";
-
-    delete data.client_id;
 
     return API.Model(Users).create(data).then(function(user){
         return user;

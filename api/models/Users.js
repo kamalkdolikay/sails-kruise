@@ -32,19 +32,49 @@ module.exports = {
         unique: true
       },
 
-      firstName: {
+      firstname: {
         type: 'string',
         defaultsTo: ''
       },
 
-      lastName: {
+      lastname: {
         type: 'string',
         defaultsTo: ''
       },
 
-      fullName: {
+      fullname: {
         type: 'string',
         defaultsTo: ''
+      },
+
+      address: {
+          type: 'string',
+          defaultsTo: ''
+      },
+
+      city: {
+          type: 'string',
+          defaultsTo: ''
+      },
+
+      state: {
+          type: 'string',
+          defaultsTo: ''
+      },
+
+      country: {
+          type: 'string',
+          defaultsTo: ''
+      },
+
+      pincode: {
+          type: 'integer',
+          defaultsTo: ''
+      },
+
+      mobile: {
+          type: 'integer',
+          defaultsTo: ''
       },
 
       image: {
