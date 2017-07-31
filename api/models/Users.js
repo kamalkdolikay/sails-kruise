@@ -46,10 +46,48 @@ module.exports = {
         defaultsTo: ''
       },
 
+      fullname: {
+        type: 'string',
+        defaultsTo: ''
+      },
+
+      address: {
+          type: 'string',
+          defaultsTo: ''
+      },
+
+      city: {
+          type: 'string',
+          defaultsTo: ''
+      },
+
+      state: {
+          type: 'string',
+          defaultsTo: ''
+      },
+
+      country: {
+          type: 'string',
+          defaultsTo: ''
+      },
+
+      pincode: {
+          type: 'integer',
+          defaultsTo: ''
+      },
+
+      mobile: {
+          type: 'integer',
+          defaultsTo: ''
+      },
+
       image: {
         type: 'string',
-        defaultsTo: '',
-        url: true
+        defaultsTo: ''
+      },
+
+      location: {
+          type: 'string'
       },
 
       date_registered: {
