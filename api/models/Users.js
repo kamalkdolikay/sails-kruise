@@ -9,7 +9,11 @@ var promisify = require('bluebird').promisify;
 var bcrypt    = require('bcrypt-nodejs');
 
 module.exports = {
+
   schema: true,
+  autoCreatedAt: true,
+  autoUpdatedAt: true,
+
   attributes: {
       username: {
         type: 'string',
@@ -32,12 +36,12 @@ module.exports = {
         unique: true
       },
 
-      firstName: {
+      firstname: {
         type: 'string',
         defaultsTo: ''
       },
 
-      lastName: {
+      lastname: {
         type: 'string',
         defaultsTo: ''
       },
@@ -46,23 +50,6 @@ module.exports = {
         type: 'string',
         defaultsTo: '',
         url: true
-      },
-
-      socialProfiles: {
-        type: 'object',
-        defaultsTo: {}
-      },
-
-      first_name: {
-          type: 'string'
-      },
-
-      last_name: {
-          type: 'string'
-      },
-
-      location: {
-          type: 'string'
       },
 
       date_registered: {

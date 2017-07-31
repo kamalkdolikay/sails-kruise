@@ -12,37 +12,49 @@ module.exports = {
 
   attributes: {
 
-      product_id: {
+      name: {
+          type: 'string',
+          required: true
+      },
+
+      price: {
           type: 'string'
       },
 
-      product_sku: {
+      category: {
           type: 'string'
       },
 
-      product_name: {
+      seller: {
+          model: 'users'
+      },
+
+      image: {
           type: 'string'
       },
 
-      product_price: {
+      weight: {
           type: 'float'
       },
 
-      product_weight: {
-          type: 'float'
-      },
-
-      product_image: {
+      thumb: {
           type: 'string'
       },
 
-      product_thumb: {
-          type: 'string'
+      isVerified: {
+          type: 'boolean',
+          defaultsTo: false
       },
 
-      product_category: {
-          type: 'string'
+      isApproved: {
+          type: 'boolean',
+          defaultsTo: false
       },
+
+      isDeleted: {
+          type: 'boolean',
+          defaultsTo: false
+      }
   }
 };
 
