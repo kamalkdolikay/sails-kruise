@@ -66,6 +66,7 @@
                 user_id: user.id
             }).then(function (token) {
                 return next(null, token.access_token, token.refresh_token, {
+                    success: true,
                     expires_in: token.calc_expires_in(),
                     roles: user.roles
                 });
