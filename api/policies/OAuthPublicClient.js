@@ -1,5 +1,5 @@
 module.exports = function (req, res, next) {
-    OAuth.authenticator.authenticate(
+    OAuthService.authenticator.authenticate(
         ['oauth2-public-client'],
         { session: false })(req,res,next);
 };
