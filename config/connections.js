@@ -56,12 +56,21 @@ module.exports.connections = {
   * Run: npm install sails-mongo                                             *
   *                                                                          *
   ***************************************************************************/
-  localDiskDb: {
+  /*localDiskDb: {
     adapter: 'sails-mongo',
     host: 'localhost',
     port: 27017,
     //user: 'username', //optional
     //password: 'password', //optional
+    database: 'sails-kruise' //optional
+  },*/
+
+  localDiskDb: {
+    adapter: 'sails-mongo',
+    host: 'ds157819.mlab.com',
+    port: 57819,
+    user: 'admin', //optional
+    password: 'admin123', //optional
     database: 'sails-kruise' //optional
   },
 
