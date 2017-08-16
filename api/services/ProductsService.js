@@ -104,10 +104,21 @@ module.exports = {
 
         Products.find(query).populate('seller').skip(skipNo).limit(count).then(function(product){
             if(!_.isEmpty(product)){
-                return res.jsonx({
-                    success: true,
-                    data: product,
-                    total: product.length
+                Products.count(query).then(function(producttotal){
+                    if(_.isNumber(producttotal)){
+                        return res.jsonx({
+                            success: true,
+                            data: product,
+                            total: producttotal
+                        });
+                    } else {
+                        return res.jsonx({
+                            success: false,
+                            error: {
+                                message: "SOME_ERROR_OCCURED"
+                            }
+                        });
+                    }
                 });
             } else {
                 return res.jsonx({
