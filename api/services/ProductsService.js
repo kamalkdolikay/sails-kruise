@@ -96,13 +96,18 @@ module.exports = {
     },
 
     list: function(data, context, req, res){
+        var page = data.page;
+        var count = data.count;
+        var skipNo = (page - 1) * count;
+
         let query = {isDeleted:false};
 
-        Products.find(query).populate('seller').then(function(product){
+        Products.find(query).populate('seller').skip(skipNo).limit(count).then(function(product){
             if(!_.isEmpty(product)){
                 return res.jsonx({
                     success: true,
-                    data: product
+                    data: product,
+                    total: product.length
                 });
             } else {
                 return res.jsonx({
