@@ -99,10 +99,11 @@ module.exports = {
         var page = data.page;
         var count = data.count;
         var skipNo = (page - 1) * count;
+        var sortBy = data.sortBy;
 
         let query = {isDeleted:false};
 
-        Products.find(query).populate('seller').skip(skipNo).limit(count).then(function(product){
+        Products.find(query).populate('seller').sort(sortBy).skip(skipNo).limit(count).then(function(product){
             if(!_.isEmpty(product)){
                 Products.count(query).then(function(producttotal){
                     if(_.isNumber(producttotal)){
